@@ -22,7 +22,10 @@ const persister = createAsyncStoragePersister({
 export default function Layout() {
   return (
   <PersistQueryClientProvider client={queryClient} persistOptions={{ persister }}>
-    <Stack />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="login" options={{ title: 'Entrar' }} />
+      <Stack.Screen name="register" options={{ title: 'Cadastrar' }} />
+    </Stack>
   </PersistQueryClientProvider>
 );
 }

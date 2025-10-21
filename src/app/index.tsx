@@ -1,12 +1,8 @@
+import { Redirect } from 'expo-router';
 import React from 'react';
-import { View } from 'react-native';
 
 
-export default function Login() {
-
-  return (
-    <View>
-      Oi
-    </View>
-  );
+export default function Index() {
+    const isLogged = true
+    return <Redirect href={isLogged? '/(auth)/login': '/(auth)/register'} />;
 }
