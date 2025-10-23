@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'expo-router'
-import * as SecureStore from 'expo-secure-store'
+import { setItemAsync } from 'expo-secure-store'
 import { env } from '../schema/env.schema'
 import type { Login } from '../types/login.types'
 import type { TokenResponse } from '../types/responses.types'
@@ -27,8 +27,8 @@ export function useLoginMutation() {
     },
     onSuccess: async ({ data }) => {
       if (data) {
-        await SecureStore.setItemAsync('access', data.accessToken)
-        await SecureStore.setItemAsync('refresh', data.accessToken)
+        await setItemAsync('access', data.accessToken)
+        await setItemAsync('refresh', data.accessToken)
         router.navigate('/(admin)/service')
       }
     },
