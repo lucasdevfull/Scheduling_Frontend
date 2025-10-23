@@ -5,6 +5,7 @@ import { env } from '../schema/env.schema'
 import type { Login } from '../types/login.types'
 import type { TokenResponse } from '../types/responses.types'
 import { http } from '../utils/http'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export function useLoginMutation() {
   const router = useRouter()
@@ -29,6 +30,7 @@ export function useLoginMutation() {
       if (data) {
         await setItemAsync('access', data.accessToken)
         await setItemAsync('refresh', data.accessToken)
+        await AsyncStorage.setItem('role', data.role)
         router.navigate('/(admin)/service')
       }
     },
