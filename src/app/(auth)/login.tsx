@@ -57,7 +57,9 @@ export default function Login() {
       {errors.password && <Text>{errors.password.message}</Text>}
       {/* <TextInput style={styles.input} secureTextEntry /> */}
       <TouchableOpacity onPress={handleSubmit(submit)}>
-        <Text style={styles.link} disabled={isPending}>Login</Text>
+        <Text style={styles.link} disabled={isPending}>
+          Login
+        </Text>
       </TouchableOpacity>
     </View>
   )
