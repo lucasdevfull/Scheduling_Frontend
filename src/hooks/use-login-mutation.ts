@@ -1,11 +1,11 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'expo-router'
 import { setItemAsync } from 'expo-secure-store'
-import { env } from '../schema/env.schema'
+import { env } from '../env'
 import type { Login } from '../types/login.types'
 import type { TokenResponse } from '../types/responses.types'
 import { http } from '../utils/http'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export function useLoginMutation() {
   const router = useRouter()

@@ -1,4 +1,4 @@
-import { env } from '../schema/env.schema'
+import { env } from '../env'
 
 enum METHOD {
   GET = 'GET',
