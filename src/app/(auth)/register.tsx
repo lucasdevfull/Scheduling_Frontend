@@ -1,24 +1,25 @@
-import { Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { styles } from '../styles'
-import { Controller, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { registerSchema } from '@/src/schema/register.schema'
-import type { Register } from '@/src/types/register.types'
+import { useRegisterForm } from "@/hooks/use-register-form";
+import { useRegisterMutation } from "@/hooks/use-register-mutation";
+import type { Register } from "@/types/register.types";
+import { Alert, View, Text, TextInput, TouchableOpacity } from "react-native";
+import { styles } from "../styles";
+import { Controller } from "react-hook-form";
+import { Link } from "expo-router";
 
 export default function Register() {
-  // const { mutateAsync } = useRegister()
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Register>({
-    resolver: zodResolver(registerSchema),
-  })
+  const { mutateAsync, error, isPending } = useRegisterMutation();
+  const { control, handleSubmit, errors } = useRegisterForm();
 
   const submit = async (data: Register) => {
-    console.log(data)
-    //await mutateAsync(data)
-  }
+    try {
+      await mutateAsync(data);
+    } catch (err: any) {
+      Alert.alert("Error", err.message);
+    }
+    if (error) {
+      Alert.alert("Error", error.message);
+    }
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>CADASTRO</Text>
@@ -53,10 +54,12 @@ export default function Register() {
         )}
       />
       {errors.password && <Text>{errors.password.message}</Text>}
-
-      <TouchableOpacity onPress={handleSubmit(submit)}>
+      <Link href={"/(auth)/login"}>
+        <Text>Já possui conta?</Text>
+      </Link>
+      <TouchableOpacity disabled={isPending} onPress={handleSubmit(submit)}>
         <Text style={styles.link}>Cadastrar</Text>
       </TouchableOpacity>
     </View>
-  )
+  );
 }

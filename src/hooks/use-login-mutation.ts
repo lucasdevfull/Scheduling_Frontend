@@ -31,7 +31,7 @@ export function useLoginMutation() {
         await setItemAsync('access', data.accessToken)
         await setItemAsync('refresh', data.accessToken)
         await AsyncStorage.setItem('role', data.role)
-        router.navigate('/(admin)/service')
+        router.navigate('/(public)/service')
       }
     },
   })

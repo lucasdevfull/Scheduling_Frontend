@@ -1,7 +1,16 @@
 import { Redirect } from 'expo-router'
-import React from 'react'
+import { getItemAsync } from 'expo-secure-store'
+import React, { useEffect, useState } from 'react'
 
 export default function Index() {
-  const isLogged = true
-  return <Redirect href={isLogged ? '/(auth)/login' : '/(auth)/register'} />
+  const [isLogged, setIsLogged] = useState<boolean>(false)
+  
+  useEffect(() => {
+    getItemAsync('access').then(token => {
+      if (token) {
+        setIsLogged(true)
+      }
+    })
+  }, [])
+  return <Redirect href={isLogged ? '/(public)/service' : '/(auth)/login'} />
 }

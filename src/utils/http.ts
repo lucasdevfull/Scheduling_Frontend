@@ -34,10 +34,6 @@ export class HttpClient {
 
   constructor(config?: HttpConfig) {
     Object.assign(this, config)
-    // this.baseUrl = config?.baseUrl;
-    // this.defaultHeaders = config?.defaultHeaders;
-    // this.includeCSRF = config?.includeCSRF;
-    // this.secureMode = config?.secureMode;
   }
 
   getHeaders(header?: HeadersInit) {

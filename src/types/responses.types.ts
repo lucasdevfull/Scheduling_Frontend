@@ -1,4 +1,4 @@
-type Response<T = undefined> = {
+export type Response<T = undefined> = {
   statusCode: number
   error: string | null
   message?: string

@@ -1,27 +1,25 @@
-import { useLoginMutation } from '@/src/hooks/use-login-mutation'
-import { useLoginForm } from '@/src/hooks/use-login-form'
-import type { Login } from '@/src/types/login.types'
-import React from 'react'
-import { Controller } from 'react-hook-form'
-import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { styles } from '../styles'
+import { useLoginMutation } from "@/hooks/use-login-mutation";
+import type { Login } from "@/types/login.types";
+import { Controller } from "react-hook-form";
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { styles } from "../styles";
+import { useLoginForm } from "@/hooks/use-login-form";
 
 export default function Login() {
-  const { control, errors, handleSubmit } = useLoginForm()
-  const { mutateAsync, error, isPending } = useLoginMutation()
+  const { control, errors, handleSubmit } = useLoginForm();
+  const { mutateAsync, error, isPending } = useLoginMutation();
   const submit = async (data: Login) => {
     try {
-      await mutateAsync(data)
+      await mutateAsync(data);
     } catch (err: any) {
-      Alert.alert('Error', err.message)
+      Alert.alert("Error", err.message);
     }
     if (error) {
-      Alert.alert('Error', error.message)
+      Alert.alert("Error", error.message);
     }
-  }
+  };
   return (
     <View style={styles.container}>
-      {<Text></Text>}
       <Text style={styles.title}>LOGIN</Text>
       <Text>Email:</Text>
       <Controller
@@ -62,5 +60,5 @@ export default function Login() {
         </Text>
       </TouchableOpacity>
     </View>
-  )
+  );
 }
