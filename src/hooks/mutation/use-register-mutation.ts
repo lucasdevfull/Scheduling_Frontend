@@ -46,7 +46,7 @@ export function useRegisterMutation() {
     },
     onSuccess: async ({ data }) => {
       if (data) {
-        if (Platform.OS === 'web'){
+        if (Platform.OS === 'web') {
           await AsyncStorage.setItem('access', data.accessToken)
           await AsyncStorage.setItem('refresh', data.accessToken)
         } else {

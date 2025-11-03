@@ -1,24 +1,24 @@
-import { useLoginForm } from "@/hooks/mutation/use-login-form";
-import { useLoginMutation } from "@/hooks/mutation/use-login-mutation";
-import type { Login } from "@/types/login.types";
-import { Controller } from "react-hook-form";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { styles } from "../styles";
-import { Link } from "expo-router";
+import { useLoginForm } from '@/hooks/mutation/use-login-form'
+import { useLoginMutation } from '@/hooks/mutation/use-login-mutation'
+import type { Login } from '@/types/login.types'
+import { Controller } from 'react-hook-form'
+import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { styles } from '../styles'
+import { Link } from 'expo-router'
 
 export default function Login() {
-  const { control, errors, handleSubmit } = useLoginForm();
-  const { mutateAsync, error, isPending } = useLoginMutation();
+  const { control, errors, handleSubmit } = useLoginForm()
+  const { mutateAsync, error, isPending } = useLoginMutation()
   const submit = async (data: Login) => {
     try {
-      await mutateAsync(data);
+      await mutateAsync(data)
     } catch (err: any) {
-      Alert.alert("Error", err.message);
+      Alert.alert('Error', err.message)
     }
     if (error) {
-      Alert.alert("Error", error.message);
+      Alert.alert('Error', error.message)
     }
-  };
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.title}>LOGIN</Text>
@@ -55,7 +55,7 @@ export default function Login() {
       />
       {errors.password && <Text>{errors.password.message}</Text>}
       {/* <TextInput style={styles.input} secureTextEntry /> */}
-      <Link href={"/(auth)/register"}>
+      <Link href={'/(auth)/register'}>
         <Text>Não possui conta? Cadastre-se!</Text>
       </Link>
       <TouchableOpacity onPress={handleSubmit(submit)}>
@@ -64,5 +64,5 @@ export default function Login() {
         </Text>
       </TouchableOpacity>
     </View>
-  );
+  )
 }

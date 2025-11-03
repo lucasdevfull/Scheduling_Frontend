@@ -16,7 +16,7 @@ export function useLoginMutation() {
       const { data, error, ok } = await http.post<TokenResponse, Error>(
         `api/auth/token?x-vercel-protection-bypass=${env.EXPO_PUBLIC_VERCEL_BYPASS}`,
         {
-          body
+          body,
         }
       )
       console.log(data)
@@ -30,7 +30,7 @@ export function useLoginMutation() {
     },
     onSuccess: async ({ data }) => {
       if (data) {
-        if (Platform.OS === 'web'){
+        if (Platform.OS === 'web') {
           await AsyncStorage.setItem('access', data.accessToken)
           await AsyncStorage.setItem('refresh', data.accessToken)
         } else {
