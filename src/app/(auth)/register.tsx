@@ -1,10 +1,10 @@
-import { useRegisterForm } from "@/hooks/use-register-form";
-import { useRegisterMutation } from "@/hooks/use-register-mutation";
+import { useRegisterForm } from "@/hooks/mutation/use-register-form";
+import { useRegisterMutation } from "@/hooks/mutation/use-register-mutation";
 import type { Register } from "@/types/register.types";
-import { Alert, View, Text, TextInput, TouchableOpacity } from "react-native";
-import { styles } from "../styles";
-import { Controller } from "react-hook-form";
 import { Link } from "expo-router";
+import { Controller } from "react-hook-form";
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { styles } from "../styles";
 
 export default function Register() {
   const { mutateAsync, error, isPending } = useRegisterMutation();
