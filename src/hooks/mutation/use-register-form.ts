@@ -1,7 +1,7 @@
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { registerSchema } from '../schema/register.schema'
-import type { Register } from '../types/register.types'
+import { useForm } from 'react-hook-form'
+import { registerSchema } from '../../schema/register.schema'
+import type { Register } from '../../types/register.types'
 
 export function useRegisterForm() {
   const {

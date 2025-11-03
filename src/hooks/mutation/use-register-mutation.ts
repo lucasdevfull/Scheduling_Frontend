@@ -2,10 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'expo-router'
 import { setItemAsync } from 'expo-secure-store'
-import { env } from '../env'
-import { http } from '../utils/http'
-import { Register } from '../types/register.types'
-import { Response, TokenResponse } from '../types/responses.types'
+import { env } from '../../env'
+import { Register } from '../../types/register.types'
+import { Response, TokenResponse } from '../../types/responses.types'
+import { http } from '../../utils/http'
+import { Platform } from 'react-native'
 
 export function useRegisterMutation() {
   const router = useRouter()
@@ -45,8 +46,13 @@ export function useRegisterMutation() {
     },
     onSuccess: async ({ data }) => {
       if (data) {
-        await setItemAsync('access', data.accessToken)
-        await setItemAsync('refresh', data.accessToken)
+        if (Platform.OS === 'web'){
+          await AsyncStorage.setItem('access', data.accessToken)
+          await AsyncStorage.setItem('refresh', data.accessToken)
+        } else {
+          await setItemAsync('access', data.accessToken)
+          await setItemAsync('refresh', data.accessToken)
+        }
         await AsyncStorage.setItem('role', data.role)
         router.navigate('/(public)/service')
       }
