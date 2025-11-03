@@ -4,6 +4,7 @@ import type { Login } from "@/types/login.types";
 import { Controller } from "react-hook-form";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "../styles";
+import { Link } from "expo-router";
 
 export default function Login() {
   const { control, errors, handleSubmit } = useLoginForm();
@@ -54,6 +55,9 @@ export default function Login() {
       />
       {errors.password && <Text>{errors.password.message}</Text>}
       {/* <TextInput style={styles.input} secureTextEntry /> */}
+      <Link href={"/(auth)/register"}>
+        <Text>Não possui conta? Cadastre-se!</Text>
+      </Link>
       <TouchableOpacity onPress={handleSubmit(submit)}>
         <Text style={styles.link} disabled={isPending}>
           Login
