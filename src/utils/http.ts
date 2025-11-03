@@ -12,11 +12,15 @@ type HttpConfig = {
   defaultHeaders?: HeadersInit
   includeCSRF?: boolean
   secureMode?: boolean
+  defaultCredentials?: RequestCredentials
+  defaultMode?: RequestMode
 }
 
 type Options = {
   body?: any
   headers?: HeadersInit
+  credentials?: RequestCredentials
+  mode?: RequestMode
 }
 
 type HttpResult<T, E> = {
@@ -26,11 +30,13 @@ type HttpResult<T, E> = {
   error: E | null
 }
 
-export class HttpClient {
+class HttpClient {
   private baseUrl?: string
   private defaultHeaders?: HeadersInit
   private includeCSRF?: boolean
   private secureMode?: boolean
+  private defaultCredentials?: RequestCredentials
+  private defaultMode?: RequestMode
 
   constructor(config?: HttpConfig) {
     Object.assign(this, config)
@@ -79,11 +85,14 @@ export class HttpClient {
       headers['Content-Type'] = 'application/json'
     }
 
+    const mode = opts.mode ?? this.defaultMode
+    const credentials = opts.credentials ?? this.defaultCredentials
+
     const init: RequestInit = {
       method,
       headers,
-      credentials: 'same-origin',
-      ...(this.secureMode ? { mode: 'same-origin' as RequestMode } : {}),
+      mode,
+      credentials,
     }
 
     switch (true) {
@@ -99,7 +108,6 @@ export class HttpClient {
     let response: Response
     try {
       response = await fetch(this.getUrl(url), init)
-      console.log(response.status)
       const contentType = response.headers.get('content-type') || ''
       let data: any
 
@@ -137,4 +145,6 @@ export const http = new HttpClient({
   baseUrl: env.EXPO_PUBLIC_API_URL,
   includeCSRF: false,
   secureMode: true,
+  defaultMode: 'cors',
+  defaultCredentials: 'same-origin',
 })
