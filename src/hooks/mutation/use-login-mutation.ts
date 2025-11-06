@@ -19,14 +19,15 @@ export function useLoginMutation() {
           body,
         }
       )
-      console.log(data)
-      if (data instanceof Blob) {
-        throw new Error('Erro de conexão com o servidor')
-      }
       if (!ok) {
         throw error
       }
-      return data!
+
+      if (data === null || data instanceof Blob) {
+        throw new Error('Erro de conexão com o servidor')
+      }
+
+      return data
     },
     onSuccess: async ({ data }) => {
       if (data) {

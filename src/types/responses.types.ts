@@ -1,3 +1,5 @@
+import type { Services } from './services.types'
+
 export type Response<T = undefined> = {
   statusCode: number
   error: string | null
@@ -12,3 +14,8 @@ export type TokenResponse = Response<{
   refreshToken: string
   role: 'admin' | 'user'
 }>
+
+export type ServicesResponse = Response<Services> & {
+  hasNextPage: boolean
+  nextCursor: number | null
+}
