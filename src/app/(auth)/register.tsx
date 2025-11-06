@@ -27,7 +27,14 @@ export default function Register() {
       <Controller
         control={control}
         name="username"
-        render={({ field }) => <TextInput style={styles.input} {...field} />}
+        render={({ field: { value, onBlur, onChange } }) => (
+          <TextInput
+            style={styles.input}
+            value={value}
+            onBlur={onBlur}
+            onChangeText={onChange}
+          />
+        )}
       />
       {errors.username && <Text>{errors.username.message}</Text>}
 
@@ -35,10 +42,12 @@ export default function Register() {
       <Controller
         control={control}
         name="email"
-        render={({ field }) => (
+        render={({ field: { value, onBlur, onChange } }) => (
           <TextInput
             style={styles.input}
-            {...field}
+            value={value}
+            onBlur={onBlur}
+            onChangeText={onChange}
             keyboardType="email-address"
           />
         )}
@@ -49,8 +58,14 @@ export default function Register() {
       <Controller
         control={control}
         name="password"
-        render={({ field }) => (
-          <TextInput style={styles.input} {...field} secureTextEntry />
+        render={({ field: { value, onBlur, onChange } }) => (
+          <TextInput
+            style={styles.input}
+            value={value}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            secureTextEntry
+          />
         )}
       />
       {errors.password && <Text>{errors.password.message}</Text>}

@@ -19,7 +19,7 @@ export function useRegisterMutation() {
           body,
         }
       )
-
+      console.log(registerResponse.data)
       if (registerResponse.data instanceof Blob) {
         throw new Error('Erro de conexão com o servidor')
       }

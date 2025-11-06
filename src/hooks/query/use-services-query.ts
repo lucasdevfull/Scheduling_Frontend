@@ -9,6 +9,7 @@ export function useServicesQuery() {
     queryKey: ['services'],
     queryFn: async ({ pageParam }) => {
       const accessToken = await getToken('access')
+      console.log({ accessToken })
       const { data, ok, error } = await http.get<
         ServicesResponse,
         ErrorResponse

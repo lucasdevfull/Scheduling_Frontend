@@ -1,5 +1,5 @@
 import { serviceSchema } from '@/schema/service.schema'
-import z from 'zod'
+import { z } from 'zod'
 
 export type Services = Array<{
   id: number
