@@ -1,4 +1,4 @@
-import { serviceSchema } from '@/schema/service.schema'
+import { serviceSchema, updateServiceSchema } from '@/schema/service.schema'
 import { z } from 'zod'
 
 export type Services = Array<{
@@ -19,3 +19,5 @@ export type ServicesQuery = {
 }
 
 export type Service = z.infer<typeof serviceSchema>
+
+export type UpdateService = z.infer<typeof updateServiceSchema>

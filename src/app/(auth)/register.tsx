@@ -26,7 +26,7 @@ export default function Register() {
       <Text>Nome:</Text>
       <Controller
         control={control}
-        name="username"
+        name="name"
         render={({ field: { value, onBlur, onChange } }) => (
           <TextInput
             style={styles.input}
@@ -36,7 +36,7 @@ export default function Register() {
           />
         )}
       />
-      {errors.username && <Text>{errors.username.message}</Text>}
+      {errors.name && <Text>{errors.name.message}</Text>}
 
       <Text>Email:</Text>
       <Controller
@@ -68,6 +68,22 @@ export default function Register() {
           />
         )}
       />
+
+      <Text>Confirmar senha:</Text>
+      <Controller
+        control={control}
+        name="confirmPassword"
+        render={({ field: { value, onBlur, onChange } }) => (
+          <TextInput
+            style={styles.input}
+            value={value}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            secureTextEntry
+          />
+        )}
+      />
+
       {errors.password && <Text>{errors.password.message}</Text>}
       <Link href={'/(auth)/login'}>
         <Text>Já possui conta?</Text>

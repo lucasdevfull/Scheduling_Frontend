@@ -1,4 +1,4 @@
-import type { Provider } from '@/src/types/provider.types'
+import { Provider } from '@/types/provider.types'
 import { QueryProvider } from './query.provider'
 import { RoleProvider } from './role.provider'
 

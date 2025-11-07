@@ -13,8 +13,9 @@ export function useRegisterMutation() {
   return useMutation({
     mutationKey: ['register'],
     mutationFn: async (body: Register) => {
+      console.log({ body })
       const registerResponse = await http.post<Response, Error>(
-        `/api/user?x-vercel-protection-bypass=${env.EXPO_PUBLIC_VERCEL_BYPASS}`,
+        `api/user?x-vercel-protection-bypass=${env.EXPO_PUBLIC_VERCEL_BYPASS}`,
         {
           body,
         }
@@ -28,7 +29,7 @@ export function useRegisterMutation() {
       }
 
       const loginResponse = await http.post<TokenResponse, Error>(
-        `/api/auth/token?x-vercel-protection-bypass=${env.EXPO_PUBLIC_VERCEL_BYPASS}`,
+        `api/auth/token?x-vercel-protection-bypass=${env.EXPO_PUBLIC_VERCEL_BYPASS}`,
         {
           body: {
             email: body.email,

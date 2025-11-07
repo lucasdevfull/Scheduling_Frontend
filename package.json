@@ -3,6 +3,7 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
+    "teste": "tsx --env-file=.env src/teste.ts",
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
@@ -54,6 +55,7 @@
     "@types/react": "~19.1.17",
     "eslint": "^9.39.0",
     "eslint-config-expo": "~10.0.0",
+    "tsx": "^4.20.6",
     "typescript": "~5.9.2"
   },
   "private": true
