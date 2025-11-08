@@ -1,24 +1,11 @@
-import { useLoginForm } from '@/hooks/mutation/use-login-form'
-import { useLoginMutation } from '@/hooks/mutation/use-login-mutation'
-import type { Login } from '@/types/login.types'
-import { Controller } from 'react-hook-form'
-import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { styles } from '../styles'
+import { useLoginViewModel } from '@/hooks/viewmodel/use-login-view-model'
 import { Link } from 'expo-router'
+import { Controller } from 'react-hook-form'
+import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { styles } from '../../styles'
 
 export default function Login() {
-  const { control, errors, handleSubmit } = useLoginForm()
-  const { mutateAsync, error, isPending } = useLoginMutation()
-  const submit = async (data: Login) => {
-    try {
-      await mutateAsync(data)
-    } catch (err: any) {
-      Alert.alert('Error', err.message)
-    }
-    if (error) {
-      Alert.alert('Error', error.message)
-    }
-  }
+  const { control, errors, handleSubmit, onSubmit, isPending } = useLoginViewModel()
   return (
     <View style={styles.container}>
       <Text style={styles.title}>LOGIN</Text>
@@ -58,7 +45,7 @@ export default function Login() {
       <Link href={'/(auth)/register'}>
         <Text>Não possui conta? Cadastre-se!</Text>
       </Link>
-      <TouchableOpacity onPress={handleSubmit(submit)}>
+      <TouchableOpacity onPress={handleSubmit(onSubmit)}>
         <Text style={styles.link} disabled={isPending}>
           Login
         </Text>

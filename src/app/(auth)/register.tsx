@@ -1,25 +1,11 @@
-import { useRegisterForm } from '@/hooks/mutation/use-register-form'
-import { useRegisterMutation } from '@/hooks/mutation/use-register-mutation'
-import type { Register } from '@/types/register.types'
+import { useRegisterViewModel } from '@/hooks/viewmodel/use-register-view-model'
 import { Link } from 'expo-router'
 import { Controller } from 'react-hook-form'
-import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { styles } from '../styles'
+import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { styles } from '../../styles'
 
 export default function Register() {
-  const { mutateAsync, error, isPending } = useRegisterMutation()
-  const { control, handleSubmit, errors } = useRegisterForm()
-
-  const submit = async (data: Register) => {
-    try {
-      await mutateAsync(data)
-    } catch (err: any) {
-      Alert.alert('Error', err.message)
-    }
-    if (error) {
-      Alert.alert('Error', error.message)
-    }
-  }
+  const { control, errors, handleSubmit, onSubmit, isPending } = useRegisterViewModel()
   return (
     <View style={styles.container}>
       <Text style={styles.title}>CADASTRO</Text>
@@ -28,12 +14,7 @@ export default function Register() {
         control={control}
         name="name"
         render={({ field: { value, onBlur, onChange } }) => (
-          <TextInput
-            style={styles.input}
-            value={value}
-            onBlur={onBlur}
-            onChangeText={onChange}
-          />
+          <TextInput style={styles.input} value={value} onBlur={onBlur} onChangeText={onChange} />
         )}
       />
       {errors.name && <Text>{errors.name.message}</Text>}
@@ -88,7 +69,7 @@ export default function Register() {
       <Link href={'/(auth)/login'}>
         <Text>Já possui conta?</Text>
       </Link>
-      <TouchableOpacity disabled={isPending} onPress={handleSubmit(submit)}>
+      <TouchableOpacity disabled={isPending} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.link}>Cadastrar</Text>
       </TouchableOpacity>
     </View>

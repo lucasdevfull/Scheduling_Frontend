@@ -19,10 +19,7 @@ const persister = createAsyncStoragePersister({
 
 export function QueryProvider({ children }: Provider) {
   return (
-    <PersistQueryClientProvider
-      client={queryClient}
-      persistOptions={{ persister }}
-    >
+    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister }}>
       {children}
     </PersistQueryClientProvider>
   )

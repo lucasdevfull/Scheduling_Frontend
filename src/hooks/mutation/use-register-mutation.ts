@@ -55,7 +55,12 @@ export function useRegisterMutation() {
           await setItemAsync('refresh', data.accessToken)
         }
         await AsyncStorage.setItem('role', data.role)
-        router.navigate('/(public)/service')
+        router.navigate({
+          pathname: '/(public)/service',
+          params: {
+            limit: 5,
+          },
+        })
       }
     },
   })

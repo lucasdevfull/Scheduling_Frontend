@@ -19,3 +19,5 @@ export type ServicesResponse = Response<Services> & {
   hasNextPage: boolean
   nextCursor: number | null
 }
+
+export type CreateServiceResponse = Response<{ serviceId: number }>

@@ -1,15 +1,15 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
-import { useRouter } from 'expo-router'
-import { styles } from '../styles'
-import { useRole } from '@/hooks/use-role'
 import { ROLE } from '@/constants/roles'
 import { useServicesQuery } from '@/hooks/query/use-services-query'
-import React from 'react'
+import { useRole } from '@/hooks/use-role'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import { FlatList, Text, TouchableOpacity, View } from 'react-native'
+import { styles } from '../../styles'
 
 export default function ServicePage() {
   const router = useRouter()
+  const { limit } = useLocalSearchParams<{ limit: string }>()
   const { role } = useRole()
-  const { data } = useServicesQuery()
+  const { data } = useServicesQuery(Number(limit))
 
   return (
     <View style={styles.container}>
@@ -19,9 +19,7 @@ export default function ServicePage() {
         <FlatList
           data={data.data}
           keyExtractor={item => item.id.toString()}
-          ListEmptyComponent={
-            <Text style={styles.link}>Nenhum serviço cadastrado.</Text>
-          }
+          ListEmptyComponent={<Text style={styles.link}>Nenhum serviço cadastrado.</Text>}
           renderItem={({ item }) => (
             <View style={styles.input}>
               {/* usando input só para reaproveitar padding/borda */}
@@ -39,10 +37,7 @@ export default function ServicePage() {
       )}
 
       {role === ROLE.ADMIN ? (
-        <TouchableOpacity
-          style={styles.link}
-          onPress={() => router.push('/create-service')}
-        >
+        <TouchableOpacity style={styles.link} onPress={() => router.push('/create-service')}>
           <Text style={styles.link}>＋ Adicionar Serviço</Text>
         </TouchableOpacity>
       ) : null}

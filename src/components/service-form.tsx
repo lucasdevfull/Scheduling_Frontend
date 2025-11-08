@@ -1,37 +1,20 @@
 import { useEffect, useState } from 'react'
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  TouchableOpacity,
-  FlatList,
-  Platform,
-} from 'react-native'
+import { View, Text, TextInput, Button, TouchableOpacity, FlatList, Platform } from 'react-native'
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Service, UpdateService } from '@/types/services.types'
 import { serviceSchema } from '@/schema/service.schema'
-import MaskInput from 'react-native-mask-input';
+import MaskInput from 'react-native-mask-input'
+import { hhmmToDate, timeToHHMM } from '@/utils/datetime'
 
-function timeToHHMM(d: Date) {
-  const hh = String(d.getHours()).padStart(2, '0')
-  const mm = String(d.getMinutes()).padStart(2, '0')
-  return `${hh}:${mm}`
-}
-function hhmmToDate(hhmm: string) {
-  const [hh, mm] = hhmm.split(':').map(Number)
-  const now = new Date()
-  now.setHours(Number.isFinite(hh) ? hh : 0, Number.isFinite(mm) ? mm : 0, 0, 0)
-  return now
-}
- 
 type FormProps = {
-    initialData?: UpdateService
+  initialData?: UpdateService
+  onSubmit: (data: any) => Promise<void>
+  isPending: boolean
 }
 
-export function ServiceForm({ initialData }:FormProps) {
+export function ServiceForm({ initialData, onSubmit, isPending }: FormProps) {
   const {
     control,
     reset,
@@ -57,6 +40,7 @@ export function ServiceForm({ initialData }:FormProps) {
     index: number
     field: 'start' | 'end'
   } | null>(null)
+
   // quando abrir o picker, precisamos de um Date value; se campo vazio, usamos now (não grava até seleção)
   const [pickerInitialDate, setPickerInitialDate] = useState<Date>(new Date())
 
@@ -72,22 +56,18 @@ export function ServiceForm({ initialData }:FormProps) {
 
   useEffect(() => {
     if (!initialData) return
-    
+
     const normalized = {
-        ...initialData,
-        availabities: initialData.availabilities.map(a => ({
-            id: a.id,
-            dayId: a.dayId,
-            startTime: timeToHHMM(new Date(a.startTime)),
-            endTime: timeToHHMM(new Date(a.endTime))
-        }))
+      ...initialData,
+      availabities: initialData.availabilities.map(a => ({
+        id: a.id,
+        dayId: a.dayId,
+        startTime: timeToHHMM(new Date(a.startTime)),
+        endTime: timeToHHMM(new Date(a.endTime)),
+      })),
     }
     reset(normalized)
-  },[initialData])
-  // adiciona um availability vazio (sem startTime/endTime)
-  const addAvailability = () => {
-    append({ dayId: 0, startTime: '', endTime: '' } as any)
-  }
+  }, [initialData])
 
   // abre picker; se campo tiver valor, usa ele como inicial, senão usa now
   const openTimePicker = (index: number, field: 'start' | 'end') => {
@@ -128,12 +108,6 @@ export function ServiceForm({ initialData }:FormProps) {
     }
   }
 
-  const onSubmit = (data: Service) => {
-    // Zod resolver já validou, se chegou aqui está ok
-    console.log('payload pronto:', data)
-    // enviar para API...
-  }
-
   return (
     <View style={{ padding: 12 }}>
       <Text>Nome do serviço</Text>
@@ -149,9 +123,7 @@ export function ServiceForm({ initialData }:FormProps) {
           />
         )}
       />
-      {errors.name && (
-        <Text style={{ color: 'red' }}>{String(errors.name.message)}</Text>
-      )}
+      {errors.name && <Text style={{ color: 'red' }}>{String(errors.name.message)}</Text>}
 
       <View
         style={{
@@ -162,7 +134,10 @@ export function ServiceForm({ initialData }:FormProps) {
         }}
       >
         <Text>Disponibilidades</Text>
-        <Button title="+ Adicionar" onPress={addAvailability} />
+        <Button
+          title="+ Adicionar"
+          onPress={() => append({ dayId: 0, startTime: '', endTime: '' } as any)}
+        />
       </View>
 
       <FlatList
@@ -205,7 +180,7 @@ export function ServiceForm({ initialData }:FormProps) {
             <Controller
               control={control}
               name={`availabilities.${index}.startTime` as const}
-              render={({ field: {onBlur, onChange, value} }) => (
+              render={({ field: { onBlur, onChange, value } }) => (
                 <View style={{ marginTop: 8 }}>
                   <Text>Início: {value || '(não definido)'}</Text>
                   {Platform.OS === 'web' ? (
@@ -216,7 +191,7 @@ export function ServiceForm({ initialData }:FormProps) {
                       onChange={onChange}
                       keyboardType="numeric"
                       maxLength={5}
-                      mask={[/\d/, /\d/, ":", /\d/, /\d/]}
+                      mask={[/\d/, /\d/, ':', /\d/, /\d/]}
                     />
                   ) : (
                     <Button
@@ -230,7 +205,7 @@ export function ServiceForm({ initialData }:FormProps) {
             <Controller
               control={control}
               name={`availabilities.${index}.endTime` as const}
-              render={({ field: {onBlur, onChange, value} }) => (
+              render={({ field: { onBlur, onChange, value } }) => (
                 <View style={{ marginTop: 8 }}>
                   <Text>Fim: {value || '(não definido)'}</Text>
                   {Platform.OS === 'web' ? (
@@ -241,13 +216,10 @@ export function ServiceForm({ initialData }:FormProps) {
                       onChange={onChange}
                       keyboardType="numeric"
                       maxLength={5}
-                      mask={[/\d/, /\d/, ":", /\d/, /\d/]}
+                      mask={[/\d/, /\d/, ':', /\d/, /\d/]}
                     />
                   ) : (
-                    <Button
-                      title="Selecionar Hora"
-                      onPress={() => openTimePicker(index, 'end')}
-                    />
+                    <Button title="Selecionar Hora" onPress={() => openTimePicker(index, 'end')} />
                   )}
                 </View>
               )}
@@ -272,7 +244,7 @@ export function ServiceForm({ initialData }:FormProps) {
         ListEmptyComponent={<Text>Nenhuma disponibilidade</Text>}
       />
 
-      <Button title="Salvar" onPress={handleSubmit(onSubmit)} />
+      <Button title="Salvar" onPress={handleSubmit(onSubmit)} disabled={isPending} />
 
       {/* DateTimePicker global controlado */}
       {openPicker && (

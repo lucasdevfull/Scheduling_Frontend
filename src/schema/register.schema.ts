@@ -9,9 +9,7 @@ export const registerSchema = z
     password: z
       .string({ error: 'Campo de senha é obrigatório' })
       .min(1, { error: 'Campo de senha é obrigatório' }),
-    confirmPassword: z
-      .string()
-      .min(8, { message: 'A senha deve ter pelo menos 8 caracteres' }),
+    confirmPassword: z.string().min(8, { message: 'A senha deve ter pelo menos 8 caracteres' }),
   })
   .refine(({ password, confirmPassword }) => password === confirmPassword, {
     message: 'As senhas devem ser iguais',

@@ -4,20 +4,20 @@ import { http } from '@/utils/http'
 import { getToken } from '@/utils/token'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
-export function useServicesQuery() {
+export function useServicesQuery(limit: number) {
   return useInfiniteQuery<ServicesQuery, Error, ServicesQuery>({
-    queryKey: ['services'],
+    queryKey: ['services', limit],
     queryFn: async ({ pageParam }) => {
       const accessToken = await getToken('access')
       console.log({ accessToken })
-      const { data, ok, error } = await http.get<
-        ServicesResponse,
-        ErrorResponse
-      >(`api/services?cursor=${pageParam ?? 0}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+      const { data, ok, error } = await http.get<ServicesResponse, ErrorResponse>(
+        `api/services?cursor=${pageParam ?? 0}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
 
       if (!ok) {
         throw error

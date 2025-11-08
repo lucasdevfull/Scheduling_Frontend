@@ -50,10 +50,7 @@ class HttpClient {
     return this.baseUrl ? `${this.baseUrl}/${url}` : `/${url}`
   }
 
-  async get<T, E>(
-    url: string,
-    { headers }: Options
-  ): Promise<HttpResult<T, E>> {
+  async get<T, E>(url: string, { headers }: Options): Promise<HttpResult<T, E>> {
     return this.request<T, E>(url, {
       headers,
     })
@@ -76,8 +73,7 @@ class HttpClient {
     opts: Options,
     method: string = METHOD.GET
   ): Promise<HttpResult<T, E>> {
-    const headers =
-      (this.getHeaders(opts.headers) as Record<string, string>) || {}
+    const headers = (this.getHeaders(opts.headers) as Record<string, string>) || {}
     // if (method !== METHOD.GET) {
     // 	headers["X-CSRFToken"] = getCsrfToken() as string;
     // }
