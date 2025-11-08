@@ -13,6 +13,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Service, UpdateService } from '@/types/services.types'
 import { serviceSchema } from '@/schema/service.schema'
+import MaskInput from 'react-native-mask-input';
 
 function timeToHHMM(d: Date) {
   const hh = String(d.getHours()).padStart(2, '0')
@@ -127,14 +128,6 @@ export function ServiceForm({ initialData }:FormProps) {
     }
   }
 
-  const handleChangeHours = (index: number, text: string) => {
-    let cleaned = text.replace(/\D/g, '')
-    if (cleaned.length > 2) {
-      cleaned = cleaned.slice(0, 2) + ':' + cleaned.slice(2, 4)
-    }
-    update(index, { ...fields[index], startTime: text })
-  }
-
   const onSubmit = (data: Service) => {
     // Zod resolver já validou, se chegou aqui está ok
     console.log('payload pronto:', data)
@@ -212,13 +205,19 @@ export function ServiceForm({ initialData }:FormProps) {
             <Controller
               control={control}
               name={`availabilities.${index}.startTime` as const}
-              render={({ field }) => (
+              render={({ field: {onBlur, onChange, value} }) => (
                 <View style={{ marginTop: 8 }}>
-                  <Text>Início: {field.value || '(não definido)'}</Text>
+                  <Text>Início: {value || '(não definido)'}</Text>
                   {Platform.OS === 'web' ? (
-                    <TextInput
-                      onChangeText={text => handleChangeHours(index, text)}
-                    ></TextInput>
+                    <MaskInput
+                      value={value}
+                      onBlur={onBlur}
+                      placeholder="Horário (HH:MM)"
+                      onChange={onChange}
+                      keyboardType="numeric"
+                      maxLength={5}
+                      mask={[/\d/, /\d/, ":", /\d/, /\d/]}
+                    />
                   ) : (
                     <Button
                       title="Selecionar Hora"
@@ -231,13 +230,19 @@ export function ServiceForm({ initialData }:FormProps) {
             <Controller
               control={control}
               name={`availabilities.${index}.endTime` as const}
-              render={({ field }) => (
+              render={({ field: {onBlur, onChange, value} }) => (
                 <View style={{ marginTop: 8 }}>
-                  <Text>Fim: {field.value || '(não definido)'}</Text>
+                  <Text>Fim: {value || '(não definido)'}</Text>
                   {Platform.OS === 'web' ? (
-                    <TextInput
-                      onChangeText={text => handleChangeHours(index, text)}
-                    ></TextInput>
+                    <MaskInput
+                      value={value}
+                      onBlur={onBlur}
+                      placeholder="Horário (HH:MM)"
+                      onChange={onChange}
+                      keyboardType="numeric"
+                      maxLength={5}
+                      mask={[/\d/, /\d/, ":", /\d/, /\d/]}
+                    />
                   ) : (
                     <Button
                       title="Selecionar Hora"
