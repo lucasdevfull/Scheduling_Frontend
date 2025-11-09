@@ -4,20 +4,21 @@ import { useRole } from '@/hooks/use-role'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { styles } from '../../styles'
+import { ServicesQuery } from '@/types/services.types'
 
 export default function ServicePage() {
   const router = useRouter()
   const { limit } = useLocalSearchParams<{ limit: string }>()
   const { role } = useRole()
-  const { data } = useServicesQuery(Number(limit))
-
+  const { data, error } = useServicesQuery(Number(limit))
+  const d = data as { pages: Array<ServicesQuery>} | undefined
   return (
     <View style={styles.container}>
-      {data === undefined ? (
+      {d === undefined ? (
         <Text style={styles.title}>Nenhum serviço Cadastrado. </Text>
       ) : (
         <FlatList
-          data={data.data}
+          data={d?.pages[0].data}
           keyExtractor={item => item.id.toString()}
           ListEmptyComponent={<Text style={styles.link}>Nenhum serviço cadastrado.</Text>}
           renderItem={({ item }) => (
@@ -31,7 +32,7 @@ export default function ServicePage() {
             </View>
           )}
           contentContainerStyle={
-            data.data.length === 0 && { flexGrow: 1, justifyContent: 'center' }
+            d.pages[0].data.length === 0 && { flexGrow: 1, justifyContent: 'center' }
           }
         />
       )}
