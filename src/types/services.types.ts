@@ -13,11 +13,10 @@ export type Services = Array<{
 }>
 
 export type ServicesQuery = {
-    data: Services
-    hasNextPage: boolean
-    nextCursor: number | null
-  }
-
+  data: Services
+  hasNextPage: boolean
+  nextCursor: number | null
+}
 
 export type Service = z.infer<typeof serviceSchema>
 

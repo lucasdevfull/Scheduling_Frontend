@@ -1,38 +1,27 @@
 import { ROLE } from '@/constants/roles'
-import { useServicesQuery } from '@/hooks/query/use-services-query'
 import { useRole } from '@/hooks/use-role'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { styles } from '../../styles'
-import { ServicesQuery } from '@/types/services.types'
+import { ServiceItem } from '@/components/service-item'
+import { useListServiceViewModel } from '@/hooks/viewmodel/use-list-service-view-model'
 
 export default function ServicePage() {
   const router = useRouter()
-  const { limit } = useLocalSearchParams<{ limit: string }>()
   const { role } = useRole()
-  const { data, error } = useServicesQuery(Number(limit))
-  const d = data as { pages: Array<ServicesQuery>} | undefined
+  const { service } = useListServiceViewModel()
   return (
     <View style={styles.container}>
-      {d === undefined ? (
+      {service === undefined ? (
         <Text style={styles.title}>Nenhum serviço Cadastrado. </Text>
       ) : (
         <FlatList
-          data={d?.pages[0].data}
+          data={service.pages[0].data}
           keyExtractor={item => item.id.toString()}
           ListEmptyComponent={<Text style={styles.link}>Nenhum serviço cadastrado.</Text>}
-          renderItem={({ item }) => (
-            <View style={styles.input}>
-              {/* usando input só para reaproveitar padding/borda */}
-              <Text style={styles.title}>{item.name}</Text>
-              {/* <Text>{item.}</Text>
-            <Text>
-              📅 {item.data} ⏰ {item.hora}
-            </Text> */}
-            </View>
-          )}
+          renderItem={({ item }) => <ServiceItem {...item} />}
           contentContainerStyle={
-            d.pages[0].data.length === 0 && { flexGrow: 1, justifyContent: 'center' }
+            service.pages[0].data.length === 0 && { flexGrow: 1, justifyContent: 'center' }
           }
         />
       )}
