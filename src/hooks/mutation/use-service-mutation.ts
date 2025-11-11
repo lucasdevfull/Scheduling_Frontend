@@ -39,3 +39,40 @@ export function useServicesMutation() {
     },
   })
 }
+
+export function useUpdateServicesMutation() {
+  const router = useRouter()
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationKey: ['update_service'],
+    mutationFn: async (body: UpdateService) => {
+      console.log(body)
+      const repo = new AvailabilitiesRepository()
+      const data = (await repo.update(body.id, body)) as UpdateService
+      // console.log(serviceSchema.parse(body))
+      // const { data, error, ok } = await http.post<CreateServiceResponse, ErrorResponse>(
+      //   'api/services',
+      //   {
+      //     body,
+      //     headers: {
+      //       'Authorization': `Bearer ${accessToken}`,
+      //     },
+      //   }
+      // )
+      // if (data instanceof Blob) {
+      //   throw new Error('Erro de conexão com o servidor')
+      // }
+
+      // if (!ok) {
+      //   throw error
+      // }
+
+      return data!
+    },
+    onSuccess: async () => {
+      Alert.alert('Sucesso', 'Serviço atualizado com sucesso')
+      queryClient.invalidateQueries({ queryKey: ['services'] })
+      router.push('/(public)/service')
+    },
+  })
+}

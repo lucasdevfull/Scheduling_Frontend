@@ -13,7 +13,7 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Service, UpdateService } from '@/types/services.types'
-import { serviceSchema } from '@/schema/service.schema'
+import { serviceSchema, updateServiceSchema } from '@/schema/service.schema'
 import MaskInput from 'react-native-mask-input'
 import { hhmmToDate, timeToHHMM } from '@/utils/datetime'
 
@@ -32,7 +32,7 @@ export function ServiceForm({ initialData, onSubmit, isPending }: FormProps) {
     setError,
     clearErrors,
   } = useForm<Service | UpdateService>({
-    resolver: zodResolver(serviceSchema),
+    resolver: zodResolver(!initialData ? serviceSchema: updateServiceSchema),
     defaultValues: {
       name: '',
       availabilities: [], // items start empty
@@ -75,6 +75,7 @@ export function ServiceForm({ initialData, onSubmit, isPending }: FormProps) {
         endTime: timeToHHMM(new Date(a.endTime)),
       })),
     }
+    console.log(normalized)
     reset(normalized)
   }, [initialData])
 

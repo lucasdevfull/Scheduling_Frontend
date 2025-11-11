@@ -6,7 +6,7 @@ import { env } from '../../env'
 import type { Login } from '../../types/login.types'
 import type { TokenResponse } from '../../types/responses.types'
 import { http } from '../../utils/http'
-import { Platform } from 'react-native'
+import { Alert, Platform } from 'react-native'
 
 export function useLoginMutation() {
   const router = useRouter()
@@ -39,6 +39,7 @@ export function useLoginMutation() {
           await setItemAsync('refresh', data.accessToken)
         }
         await AsyncStorage.setItem('role', data.role)
+        Alert.alert('Mensagem', 'Login realizado com sucesso')
         router.navigate({
           pathname: '/(public)/service',
           params: {

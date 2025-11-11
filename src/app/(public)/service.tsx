@@ -9,7 +9,8 @@ import { useListServiceViewModel } from '@/hooks/viewmodel/use-list-service-view
 export default function ServicePage() {
   const router = useRouter()
   const { role } = useRole()
-  const { service } = useListServiceViewModel()
+  const { service, onDelete } = useListServiceViewModel()
+
   return (
     <View style={styles.container}>
       {service === undefined ? (
@@ -19,7 +20,18 @@ export default function ServicePage() {
           data={service.pages[0].data}
           keyExtractor={item => item.id.toString()}
           ListEmptyComponent={<Text style={styles.link}>Nenhum serviço cadastrado.</Text>}
-          renderItem={({ item }) => <ServiceItem {...item} />}
+          renderItem={({ item }) => (
+            <ServiceItem
+              {...item}
+              onDelete={onDelete}
+              onPress={() =>
+                router.navigate({
+                  pathname: '/(public)/[id]',
+                  params: { id: item.id },
+                })
+              }
+            />
+          )}
           contentContainerStyle={
             service.pages[0].data.length === 0 && { flexGrow: 1, justifyContent: 'center' }
           }
