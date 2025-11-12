@@ -7,8 +7,8 @@ export type Services = Array<{
   availabilities: Array<{
     id: number
     dayId: number
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
   }>
 }>
 

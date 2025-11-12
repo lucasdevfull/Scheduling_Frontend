@@ -17,15 +17,15 @@ export default function UpdateServicePage() {
       const data = await repo.findById(id)
       const serv = {
         ...data,
-        availabilities: data?.availabilities.map((a) => {
-            const startTime = timeToHHMM(srtToTime(new Date(a.startTime!).toTimeString()))
-            const endTime = timeToHHMM(srtToTime(new Date(a.endTime!).toTimeString()))
-            return {
-                ...a,
-                startTime,
-                endTime
-            }
-        })
+        availabilities: data?.availabilities.map(a => {
+          const startTime = timeToHHMM(srtToTime(new Date(a.startTime!).toTimeString()))
+          const endTime = timeToHHMM(srtToTime(new Date(a.endTime!).toTimeString()))
+          return {
+            ...a,
+            startTime,
+            endTime,
+          }
+        }),
       }
       setService(serv as any)
     }

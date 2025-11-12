@@ -19,17 +19,20 @@ export default function ServicePage() {
         <FlatList
           data={service.pages[0].data}
           keyExtractor={item => item.id.toString()}
-          ListEmptyComponent={<Text style={styles.link}>Nenhum serviço cadastrado.</Text>}
+          ListEmptyComponent={<Text style={styles.title}>Nenhum serviço cadastrado.</Text>}
           renderItem={({ item }) => (
             <ServiceItem
               {...item}
+              role={role}
               onDelete={onDelete}
-              onPress={() =>
-                router.navigate({
-                  pathname: '/(public)/[id]',
-                  params: { id: item.id },
-                })
-              }
+              onPress={() => {
+                if (role === ROLE.ADMIN) {
+                  router.navigate({
+                    pathname: '/(public)/[id]',
+                    params: { id: item.id },
+                  })
+                }
+              }}
             />
           )}
           contentContainerStyle={
@@ -37,7 +40,6 @@ export default function ServicePage() {
           }
         />
       )}
-
       {role === ROLE.ADMIN ? (
         <TouchableOpacity style={styles.link} onPress={() => router.push('/create-service')}>
           <Text style={styles.link}>＋ Adicionar Serviço</Text>
