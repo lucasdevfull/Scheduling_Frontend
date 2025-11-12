@@ -1,7 +1,7 @@
 import { ROLE } from '@/constants/roles'
 import { useRole } from '@/hooks/use-role'
 import { useRouter } from 'expo-router'
-import { FlatList, Pressable, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Platform, Pressable, Text, TouchableOpacity, View } from 'react-native'
 import { styles } from '../../styles'
 import { ServiceItem } from '@/components/service-item'
 import { useListServiceViewModel } from '@/hooks/viewmodel/use-list-service-view-model'
@@ -14,10 +14,11 @@ export default function ServicePage() {
   const { service, onDelete } = useListServiceViewModel()
 
   const logout = async () => {
-    await AsyncStorage.removeItem('access')
-    await AsyncStorage.removeItem('refresh')
+    if (Platform.OS === 'web') {
+      await AsyncStorage.removeItem('access')
+      await AsyncStorage.removeItem('refresh')
+    }
     await AsyncStorage.removeItem('role')
-    console.log('sai')
     router.navigate('/(auth)/login')
   }
   return (
