@@ -177,8 +177,8 @@ export class AvailabilitiesRepository {
     })
 
     return {
-      id: sdata.id ?? numericId,
-      name: sdata.name ?? '',
+      id: Number(sdata.id) ?? numericId,
+      name: String(sdata.name) ?? '',
       availabilities,
     }
   }
@@ -247,7 +247,7 @@ export class AvailabilitiesRepository {
   // --- UPDATE: upsert availabilities mantendo ids numéricos ---
   async update(id: number | string, data: UpdateService) {
     const numericId = typeof id === 'number' ? id : Number(id)
-
+    console.log(numericId)
     const serviceQ = query(collection(db, 'service'), where('id', '==', numericId), limitQuery(1))
     const serviceSnaps = await getDocs(serviceQ)
     if (serviceSnaps.empty) throw new Error('Service not found')
