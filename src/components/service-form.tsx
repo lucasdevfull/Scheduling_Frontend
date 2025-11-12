@@ -112,7 +112,6 @@ export function ServiceForm({ initialData, onSubmit, isPending }: FormProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Nome do serviço</Text>
-
       <Controller
         control={control}
         name="name"
@@ -153,10 +152,7 @@ export function ServiceForm({ initialData, onSubmit, isPending }: FormProps) {
                     <TouchableOpacity
                       key={d.id}
                       onPress={() => onChange(d.id)}
-                      style={[
-                        styles.dayButton,
-                        value === d.id && styles.dayButtonActive,
-                      ]}
+                      style={[styles.dayButton, value === d.id && styles.dayButtonActive]}
                     >
                       <Text>{d.label}</Text>
                     </TouchableOpacity>

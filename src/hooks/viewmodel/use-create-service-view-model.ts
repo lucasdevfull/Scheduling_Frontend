@@ -5,7 +5,6 @@ import { Alert } from 'react-native'
 export function useCreateServiceViewModel() {
   const { mutateAsync, error, isPending } = useServicesMutation()
   const onSubmit = async (data: Service) => {
-    console.log('payload pronto:', data)
     try {
       await mutateAsync(data)
     } catch (err: any) {

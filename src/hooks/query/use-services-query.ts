@@ -1,6 +1,5 @@
 import { AvailabilitiesRepository } from '@/db/repository/availiabilities'
 import { ServicesQuery } from '@/types/services.types'
-import { getToken } from '@/utils/token'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 export function useServicesQuery(limit: number) {
@@ -8,7 +7,7 @@ export function useServicesQuery(limit: number) {
     queryKey: ['services', limit],
     queryFn: async ({ pageParam }) => {
       const cursor = !pageParam ? 0 : pageParam
-      const repo =  new AvailabilitiesRepository()
+      const repo = new AvailabilitiesRepository()
       const data = await repo.findAll(limit, Number(cursor))
       // const { data, ok, error } = await http.get<ServicesResponse, ErrorResponse>(
       //   `api/services?cursor=${pageParam ?? 0}`,

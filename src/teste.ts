@@ -1,8 +1,7 @@
 import { AvailabilitiesRepository } from './db/repository/availiabilities'
-import { serviceSchema } from './schema/service.schema'
-import { http } from './utils/http'
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NjI2NTI4MDYsInN1YiI6ImQ2Y2Q2ZDcxLTYwYzItNDYxYS04NzZlLTBmNGE0YWY4MWIyZCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MjY0OTIwNiwidHlwZSI6ImFjY2VzcyJ9.GshD77mbnhGKz26ve9osH2b6WC4jHcFe1WP9sFApow4'
+const token =
+  'eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NjI2NTI4MDYsInN1YiI6ImQ2Y2Q2ZDcxLTYwYzItNDYxYS04NzZlLTBmNGE0YWY4MWIyZCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MjY0OTIwNiwidHlwZSI6ImFjY2VzcyJ9.GshD77mbnhGKz26ve9osH2b6WC4jHcFe1WP9sFApow4'
 
 async function main() {
   // const body = {
@@ -14,7 +13,7 @@ async function main() {
   // }
   // const p = serviceSchema.parse(body)
   // const response = await http.post(
-  //   `http://localhost:3000/api/services`, 
+  //   `http://localhost:3000/api/services`,
   //   //`api/services?x-vercel-protection-bypass=${env.EXPO_PUBLIC_VERCEL_BYPASS}`,
   //    {
   //      headers: {
@@ -29,7 +28,7 @@ async function main() {
   //      body,
   //    }
   //  )
-  const repo =  new AvailabilitiesRepository()
+  const repo = new AvailabilitiesRepository()
   const data = await repo.findAll(5, 0)
   console.log(data.data)
 }
