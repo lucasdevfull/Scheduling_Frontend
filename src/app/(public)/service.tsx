@@ -1,18 +1,28 @@
 import { ROLE } from '@/constants/roles'
 import { useRole } from '@/hooks/use-role'
 import { useRouter } from 'expo-router'
-import { FlatList, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Pressable, Text, TouchableOpacity, View } from 'react-native'
 import { styles } from '../../styles'
 import { ServiceItem } from '@/components/service-item'
 import { useListServiceViewModel } from '@/hooks/viewmodel/use-list-service-view-model'
+import { getToken } from '@/utils/token'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function ServicePage() {
   const router = useRouter()
   const { role } = useRole()
   const { service, onDelete } = useListServiceViewModel()
 
+  const logout = async () => {
+    await AsyncStorage.removeItem('access')
+    await AsyncStorage.removeItem('refresh')
+    await AsyncStorage.removeItem('role')
+    console.log('sai')
+    router.navigate('/(auth)/login')
+  }
   return (
     <View style={styles.container}>
+      <Pressable onPress={logout}><Text>Logout</Text></Pressable>
       {service === undefined ? (
         <Text style={styles.title}>Nenhum serviço Cadastrado. </Text>
       ) : (

@@ -7,8 +7,10 @@ import type { Login } from '../../types/login.types'
 import type { TokenResponse } from '../../types/responses.types'
 import { http } from '../../utils/http'
 import { Alert, Platform } from 'react-native'
+import { useRole } from '../use-role'
 
 export function useLoginMutation() {
+  const { setRole } = useRole()
   const router = useRouter()
   return useMutation({
     mutationKey: ['login'],
@@ -38,7 +40,8 @@ export function useLoginMutation() {
           await setItemAsync('access', data.accessToken)
           await setItemAsync('refresh', data.accessToken)
         }
-        await AsyncStorage.setItem('role', data.role)
+        await setRole(data.role)
+        //await AsyncStorage.setItem('role', data.role)
         Alert.alert('Mensagem', 'Login realizado com sucesso')
         router.navigate({
           pathname: '/(public)/service',
