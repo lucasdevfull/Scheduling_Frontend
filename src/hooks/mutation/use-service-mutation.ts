@@ -46,7 +46,6 @@ export function useUpdateServicesMutation() {
   return useMutation({
     mutationKey: ['update_service'],
     mutationFn: async (body: UpdateService) => {
-      console.log(body)
       const repo = new AvailabilitiesRepository()
       const data = (await repo.update(body.id, body)) as UpdateService
       // console.log(serviceSchema.parse(body))

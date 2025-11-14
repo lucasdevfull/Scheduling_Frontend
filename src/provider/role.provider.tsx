@@ -7,7 +7,7 @@ type Role = (typeof ROLE)[keyof typeof ROLE]
 
 interface RoleContextValue {
   role: Role
-  setRole: (role: Role) => void
+  setRole: (role: Role) => Promise<void>
 }
 
 export const RoleContext = createContext<RoleContextValue | undefined>(undefined)
@@ -23,9 +23,9 @@ export function RoleProvider({ children }: Provider) {
     })
   }, [])
 
-  const setRole = (newRole: Role) => {
+  const setRole = async (newRole: Role) => {
     setRoleState(newRole)
-    AsyncStorage.setItem('role', newRole)
+    await AsyncStorage.setItem('role', newRole)
   }
 
   return <RoleContext.Provider value={{ role, setRole }}>{children}</RoleContext.Provider>

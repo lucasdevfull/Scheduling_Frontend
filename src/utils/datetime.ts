@@ -1,18 +1,28 @@
-export function timeToHHMM(d: Date) {
-  const hh = String(d.getHours()).padStart(2, '0')
-  const mm = String(d.getMinutes()).padStart(2, '0')
+export function timeToHHMM(d: Date): string {
+  const hh = String(d.getHours()).padStart(2, "0")
+  const mm = String(d.getMinutes()).padStart(2, "0")
   return `${hh}:${mm}`
 }
-export function hhmmToDate(hhmm: string) {
-  const [hh, mm] = hhmm.split(':').map(Number)
+
+
+export function hhmmToDate(hhmm?: string): Date {
   const now = new Date()
-  now.setHours(Number.isFinite(hh) ? hh : 0, Number.isFinite(mm) ? mm : 0, 0, 0)
+  if (!hhmm) return now
+  const parts = hhmm.split(':').map(n => Number(n))
+  const hh = Number.isFinite(parts[0]) ? parts[0] : 0
+  const mm = Number.isFinite(parts[1]) ? parts[1] : 0
+  now.setHours(hh, mm, 0, 0)
   return now
 }
 
-export function srtToTime(value: string) {
-  const [H, M, S] = value.split(':').map(Number)
-  const date = new Date()
-  date.setUTCHours(H, M)
-  return date
+
+export function srtToTime(value?: string): Date {
+  const d = new Date()
+  if (!value) return d
+  const parts = value.split(':').map(n => Number(n))
+  const H = Number.isFinite(parts[0]) ? parts[0] : 0
+  const M = Number.isFinite(parts[1]) ? parts[1] : 0
+  const S = Number.isFinite(parts[2]) ? parts[2] : 0
+  d.setHours(H, M, S, 0)
+  return d
 }

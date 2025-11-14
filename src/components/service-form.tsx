@@ -32,7 +32,7 @@ export function ServiceForm({ initialData, onSubmit, isPending }: FormProps) {
     setError,
     clearErrors,
   } = useForm<Service | UpdateService>({
-    resolver: zodResolver(!initialData ? serviceSchema: updateServiceSchema),
+    resolver: zodResolver(!initialData ? serviceSchema : updateServiceSchema),
     defaultValues: {
       name: '',
       availabilities: [],
